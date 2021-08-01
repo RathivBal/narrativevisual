@@ -1,4 +1,4 @@
-Entity,Code,Year,Life expectancy,GDP per capita,"Total population (Gapminder, HYDE & UN)",Continent
+Entity,Code,Year,LifeExpectancy,GDPperCapita,TotalPopulation,Continent
 Aruba,ABW,2001,73.853,,93000,North America
 Aruba,ABW,2002,73.937,,95000,North America
 Aruba,ABW,2003,74.038,,97000,North America
