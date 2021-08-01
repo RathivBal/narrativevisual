@@ -9,10 +9,9 @@
   <input type="checkbox" class="checkbox" value="Asia" checked><label>Asia</label>
   <input type="checkbox" class="checkbox" value="Europe" checked><label>Europe</label>
   <input type="checkbox" class="checkbox" value="Africa" checked><label>Africa</label>
-  <input type="checkbox" class="checkbox" value="North America" checked><label>North America</label>
- <input type="checkbox" class="checkbox" value="South America" checked><label>South America</label>
+  <input type="checkbox" class="checkbox" value="Americas" checked><label>America</label>
   <input type="checkbox" class="checkbox" value="Oceanica" checked><label>Oceanica</label>
-  <input type="checkbox" class="checkbox" value="Antartica" checked><label>Antartica</label>
+
 </div>
 <script>
 async function init() {
@@ -30,7 +29,7 @@ var svg = d3.select("#my_dataviz")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
 
-const data = await d3.csv("./WorldBankData.csv")
+const data = await d3.csv("gdpData.csv")
 
 var allGroup = d3.map(data, function(d){return(d.continent)}).keys();
 
