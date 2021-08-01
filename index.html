@@ -16,8 +16,7 @@ var svg = d3.select("svg")
     height= svg.attr("height") - margin;
 var xScale=d3.scaleLog().domain([10000,10000000000]).range([0,width]).base(10);
 var yScale=d3.scaleLog().domain([10,150]).range([height,0]).base(10);
-//var x_axis=d3.axisBottom(xScale).tickValues([10,20,50,100]).
-tickFormat(d3.format(".0f"));
+//var x_axis=d3.axisBottom(xScale).tickValues([10,20,50,100]).tickFormat(d3.format(".0f"));
 //var y_axis=d3.axisLeft(yScale).tickValues([10,20,50,100]).tickFormat(d3.format(".0f"));;
 var g = svg.append("g")
 g.attr("transform","translate(50,50)")
