@@ -1,120 +1,53 @@
 <html>
-<script src = 'https://d3js.org/d3.v5.min.js'></script>
+    <head>
+        <title>Life Expectancy Data Visualization</title>
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<div id="my_dataviz"></div>
 <body onload ='init()'>
 
-<div id="my_dataviz"></div>
-<select id="selectButton"></select>
+               <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://rawgithub.com/Caged/d3-tip/master/examples/example-styles.css">
 
-<div>
-  <input type="checkbox" class="checkbox" value="Asia" checked><label>Asia</label>
-  <input type="checkbox" class="checkbox" value="Europe" checked><label>Europe</label>
-  <input type="checkbox" class="checkbox" value="Africa" checked><label>Africa</label>
-  <input type="checkbox" class="checkbox" value="Americas" checked><label>America</label>
-  <input type="checkbox" class="checkbox" value="Oceanica" checked><label>Oceanica</label>
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    </head>
+<!-- load all country names and then draw World data first -->
+<body>
+       <!-- Menu section -->
+    <div id="step1" class="container-fluid" style="height:300px">
+        <div>
+            <p>
+                <h1>Life Expectancy based on GDP</h1>
+                Worldwide data of life expectancy based on GDP per capita. Click on the below links to know more about countires in specific regions .<br/>
+            </p>
+            <p><div id="to_step2"><a href="#">See Asia Regions >>></a></div></p>
+<p><div id="to_step3"><a href="#">Drill more to specific regions >>></a></div></p>
+        </div>
+    </div>
+
+<div id = "ckbox" align="center">
+  <input type="checkbox" id="asia_ck" disabled=disabled" class="checkbox" value="Asia" checked><label>Asia</label>
+  <input type="checkbox" id="eur_ck" disabled=disabled" class="checkbox" value="Europe" checked><label>Europe</label>
+  <input type="checkbox" id="af_ck" disabled=disabled" class="checkbox" value="Africa" checked><label>Africa</label>
+  <input type="checkbox" id="am_ck" disabled=disabled" class="checkbox" value="Americas" checked><label>Americas</label>
+  <input type="checkbox" id="oc_ck" disabled=disabled" class="checkbox" value="Oceanica" checked><label>Oceanica</label>
 
 </div>
-<script>
-async function init() {
+   
+    <div class="content" align="center">
+        <svg id="chart"></svg>
+    </div>
+    
+    <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js"></script>
+    <script src="load1.js" charset="utf-8"></script>
 
-var margin = {top: 10, right: 20, bottom: 30, left: 50},
-    width = 500 - margin.left - margin.right,
-    height = 420 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
-
-const data = await d3.csv("gdpData.csv")
-
-var allGroup = d3.map(data, function(d){return(d.continent)}).keys();
-
-d3.select("#selectButton")
-      .selectAll('myOptions')
-     	.data(allGroup)
-      .enter()
-    	.append('option')
-      .text(function (d) { return d; }) // text showed in the menu
-      .attr("value", function (d) { return d; })
-
-
-	
-var x=d3.scaleLinear()
-.domain([0,10000])
-.range([0,width]);
-
-svg.append("g")
-.attr("transform","translate(0," + height + ")")
-.call(d3.axisBottom(x));
-
-var y = d3.scaleLinear()
-.domain([35,90])
-.range([height,0]);
-
-svg.append("g")
-.call(d3.axisLeft(y));
-
-var z=d3.scaleLinear()
-.domain([200000,1310000000])
-.range([1,40]);
-
-
-var myColor = d3.scaleOrdinal().domain(data)
-  .range(d3.schemePaired);
+<div class="container-fluid" style="height:50px">
+    <strong style="color:orange">Orange</strong> line is for total average, <strong style="color:blue">blue</strong> is for male, and <strong style="color:red">red</strong> is for female. <br/>
+</div>
 
 
 
-var circle = svg.append("g")
-.selectAll("dot")
-.data(data)
-.enter()
-.append("circle")
-.attr("class" , function(d){ return d.continent })
-.attr("cx", function (d) {return x(d.GDPperCapita);} )
-.attr("cy", function (d) {return y(d.LifeExpectancy);} )
-.attr("r", function (d) {return z(d.TotalPopulation);} )
-.style("fill", function(d) {return myColor(d.continent);})
-.style("opacity", "0.7")
-.attr("stroke", "black")
-.append('title')
-.text(d => d.country)
-.on('mouseover', function() {
-     d3.select(this).attr('stroke', '#333').attr('stroke-width', 2);
-    })
-    .on('mouseout', function() {
-         d3.select(this).attr('stroke', null);})
-
- function update(){
-
-      // For each check box:
-      d3.selectAll(".checkbox").each(function(d){
-        cb = d3.select(this);
-        grp = cb.property("value")
-
-        // If the box is check, I show the group
-        if(cb.property("checked")){
-          svg.selectAll("."+grp).transition().duration(1000).style("opacity", 1).attr("r", function(d){ return z(d.TotalPopulation) })
-
-        // Otherwise I hide it
-        }else{
-          svg.selectAll("."+grp).transition().duration(1000).style("opacity", 0).attr("r", 0)
-        }
-      })
-    }
-
-    // When a button change, I run the update function
-    d3.selectAll(".checkbox").on("change",update);
-
-    // And I initialize it at the beginning
-    update()
-
-
-
-}
-</script>
-</body>
 </html>
