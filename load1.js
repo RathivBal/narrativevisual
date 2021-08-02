@@ -170,6 +170,13 @@ document.getElementById("af_ck").disabled=false;
 document.getElementById("am_ck").disabled=false;
 document.getElementById("oc_ck").disabled=false;
 
+document.getElementById("asia_ck").checked=true;	
+document.getElementById("eur_ck").checked = true;
+document.getElementById("eur_ck").checked = true;
+document.getElementById("af_ck").checked = true;
+document.getElementById("am_ck").checked = true;
+document.getElementById("oc_ck").checked = true;
+
 chart.selectAll('circle').remove();
 
 chart.selectAll("mydots")
